@@ -182,14 +182,13 @@ export default function Layout({ children }) {
         <main className="lg:pl-72 bg-gray-50">
           <div className="">
             <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-              <div className="min-w-0 flex-1 mb-4">
+              {/* <div className="min-w-0 flex-1 mb-4">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
                   Dashboard
                 </h2>
-              </div>
+              </div> */}
 
-                {children}
-
+              {children}
             </div>
           </div>
         </main>

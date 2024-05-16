@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Card from "../components/card";
 import { Pagination } from "../components/pagination";
-import CardsSkeleton from "../components/skeleton"
+import CardsSkeleton from "../components/skeleton";
 
 interface Raindrop {
   _id: string;
@@ -63,15 +63,10 @@ export default function Page({
 
   if (isLoading) {
     return (
-      <ul role="list" className="space-y-10">
-        <CardsSkeleton />
-        <CardsSkeleton />
-        <CardsSkeleton />
-        <CardsSkeleton />
-        <CardsSkeleton />
+      <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <CardsSkeleton />
       </ul>
-    )
+    );
   }
   if (error) {
     return <p>Error: {error}</p>;
@@ -91,7 +86,6 @@ export default function Page({
         )}
       </section>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-
     </>
   );
 }
