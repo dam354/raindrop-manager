@@ -3,15 +3,18 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
+  BellIcon,
   CalendarIcon,
   ChartPieIcon,
+  Cog6ToothIcon,
   DocumentDuplicateIcon,
   FolderIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-
+import Popup from "../components/popup";
+import ApiKeyForm from "../components/apikeyform";
 const navigation = [{ name: "Dashboard", href: "", icon: HomeIcon, current: true }];
 
 function classNames(...classes) {
@@ -20,17 +23,42 @@ function classNames(...classes) {
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [settingsOpen, setSettingOpen] = useState(false);
+  const [apiKey, setApiKey] = useState("");
 
+  const handleSaveApiKey = async (apiKey: string) => {
+    const res = await fetch("/api/auth/setOpenAIApiKey", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ apiKey }),
+    });
+    console.log(res);
+    if (res.ok) {
+      alert("API key updated successfully!");
+      setApiKey(""); // Clear the input field on success
+    } else {
+      alert("Failed to update API key.");
+    }
+  };
+  const handleDeleteApiKey = async () => {
+    const res = await fetch("/api/auth/deleteOpenAIApiKey", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      alert("API key deleted successfully!");
+      setApiKey(""); // Clear the input field on success
+    } else {
+      alert("Failed to delete API key.");
+    }
+  };
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -56,7 +84,7 @@ export default function Layout({ children }) {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
+                <Dialog.Panel className="relative mr--16 flex w-full max-w-xs flex-1">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -73,14 +101,9 @@ export default function Layout({ children }) {
                       </button>
                     </div>
                   </Transition.Child>
-                  {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
-                    <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                      />
+                    <div className="flex h-16 shrink-0 items-center text-indigo-700 font-semibold text-2xl ">
+                      Raindrop Manager
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -110,7 +133,22 @@ export default function Layout({ children }) {
                             ))}
                           </ul>
                         </li>
+                        <li className="mt-auto">
+                          <button
+                            onClick={() => setSettingOpen(true)}
+                            className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                          >
+                            <Cog6ToothIcon
+                              className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                              aria-hidden="true"
+                            />
+                            Settings
+                          </button>
+                        </li>
                       </ul>
+                      <Popup settingsOpen={settingsOpen} setSettingOpen={setSettingOpen}>
+                        <ApiKeyForm onDelete={handleDeleteApiKey} apiKey={apiKey} onSave={handleSaveApiKey} />
+                      </Popup>
                     </nav>
                   </div>
                 </Dialog.Panel>
@@ -119,16 +157,10 @@ export default function Layout({ children }) {
           </Dialog>
         </Transition.Root>
 
-        {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
-            <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
-              />
+            <div className="flex h-16 shrink-0 items-center text-indigo-700 font-semibold text-2xl">
+              Raindrop Manager
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -158,46 +190,38 @@ export default function Layout({ children }) {
                     ))}
                   </ul>
                 </li>
+                <li className="mt-auto">
+                  <button
+                    onClick={() => setSettingOpen(true)}
+                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                  >
+                    <Cog6ToothIcon
+                      className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                      aria-hidden="true"
+                    />
+                    Settings
+                  </button>
+                </li>
               </ul>
+              <Popup settingsOpen={settingsOpen} setSettingOpen={setSettingOpen}>
+                <ApiKeyForm onDelete={handleDeleteApiKey} apiKey={apiKey} onSave={handleSaveApiKey} />
+              </Popup>
             </nav>
           </div>
         </div>
-
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-          <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
-            <span className="sr-only">Open sidebar</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-          <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">Dashboard</div>
-          <a href="#">
-            <span className="sr-only">Your profile</span>
-            <img
-              className="h-8 w-8 rounded-full bg-gray-50"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt=""
-            />
-          </a>
-        </div>
-
-        <main className="lg:pl-72 bg-gray-50">
-          <div className="">
-            <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-              {/* <div className="min-w-0 flex-1 mb-4">
+      </div>
+      <main className="lg:pl-72 bg-gray-50">
+        <div className="">
+          <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
+            {/* <div className="min-w-0 flex-1 mb-4">
                 <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
                   Dashboard
                 </h2>
               </div> */}
-
-              {children}
-            </div>
+            {children}
           </div>
-        </main>
-
-        {/* <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-      
-        </aside>
-         */}
-      </div>
+        </div>
+      </main>
     </>
   );
 }

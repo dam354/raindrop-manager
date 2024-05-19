@@ -39,7 +39,7 @@ export default function Page({
     try {
       const response = await fetch(`/api/proxy/fetchRaindrops?page=${page}&perpage=6`);
       if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.statusText}`);
+        throw new Error(`${response.statusText} - Add gpt api key in settings`);
       }
       const jsonData: RaindropData = await response.json();
       console.log("Fetched data:", jsonData); // Debugging log
@@ -76,7 +76,7 @@ export default function Page({
 
   return (
     <>
-      <section className=" grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <section className=" grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
         {data && data.items && data.items.length > 0 ? (
           data.items.map((raindrop: Raindrop) => (
             <Card key={raindrop._id} raindrop={raindrop} currentPage={currentPage} />
