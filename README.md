@@ -1,6 +1,12 @@
 # Raindrop.io Drop Manager
 
-This is a web application built using Next.js that integrates with the Raindrop.io API to manage and organize bookmarks. The tool allows users to fetch their bookmarks from Raindrop.io, view suggested tags, and generate additional tags using OpenAI's GPT-3.5-turbo model.
+## Description
+
+Raindrop.io Drop Manager is a web application built using Next.js that integrates with the Raindrop.io API to manage and organize bookmarks. The tool allows users to fetch their bookmarks from Raindrop.io, view suggested tags, and generate additional tags using OpenAI's GPT-3.5-turbo model.
+
+## Why?
+
+The goal of Raindrop.io Drop Manager is to simplify the process of managing and organizing bookmarks. By leveraging AI-generated tags, users can enhance the discoverability of their saved content, making it easier to find and categorize bookmarks. This project aims to streamline bookmark management, reduce clutter, and improve productivity.
 
 ## Features
 
@@ -21,29 +27,29 @@ Before running the application, make sure you have the following:
 - Raindrop.io API access token
 - OpenAI API key
 
-## Installation
+## Quick Start
 
 Clone the repository:
 
-```
+```bash
 git clone https://github.com/dam354/raindrop-bookmark-manager.git
 ```
 
 Navigate to the project directory:
 
-```
+```bash
 cd raindrop-bookmark-manager
 ```
 
 Install the dependencies:
 
-```
+```bash
 npm install
 ```
 
 Create a `.env` file in the project root and provide the necessary environment variables:
 
-```
+```bash
 NEXT_PUBLIC_CLIENT_ID=your-raindrop-client-id
 CLIENT_SECRET=your-raindrop-client-secret
 OPENAI_API_KEY=your-openai-api-key
@@ -53,23 +59,27 @@ Replace `your-raindrop-client-id`, `your-raindrop-client-secret`, and `your-open
 
 Start the development server:
 
-```
+```bash
 npm run dev
 ```
 
-The application will be accessible at [http://localhost:3000](http://localhost:3000/).
+The application will be accessible at [http://localhost:3000](http://localhost:3000).
 
 ## Usage
 
-1.  Open the application in your web browser.
-2.  Click on the "Login with Raindrop.io" button to authenticate with Raindrop.io.
-3.  Once authenticated, you will be redirected to the dashboard page.
-4.  The dashboard displays your bookmarks fetched from Raindrop.io.
-5.  Each bookmark card shows the title, excerpt, cover image (if available), and suggested tags.
-6.  Additional tags generated using OpenAI's GPT-3.5-turbo model are also displayed for each bookmark.
-7.  Use the pagination controls to navigate through the bookmarks.
-8.  To update a bookmark with new tags, click on the "Update" button on the bookmark card.
-9.  The application will send a request to the Raindrop.io API to update the bookmark with the new tags.
+1. Open the application in your web browser.
+2. Click on the "Login with Raindrop.io" button to authenticate with Raindrop.io.
+3. Once authenticated, you will be redirected to the dashboard page.
+4. The dashboard displays your bookmarks fetched from Raindrop.io.
+5. Each bookmark card shows the title, excerpt, cover image (if available), and suggested tags.
+6. Additional tags generated using OpenAI's GPT-3.5-turbo model are also displayed for each bookmark.
+7. Use the pagination controls to navigate through the bookmarks.
+8. To update a bookmark with new tags, click on the "Update" button on the bookmark card.
+9. The application will send a request to the Raindrop.io API to update the bookmark with the new tags.
+
+## Contributing
+
+Contributions are welcome! Please refer to the contribution guidelines in the `CONTRIBUTING.md` file for more information on how to submit pull requests, report issues, and suggest enhancements.
 
 ## API Routes
 
@@ -89,24 +99,24 @@ The application implements a caching mechanism using node-cache to improve perfo
 
 The `src/` directory houses the main codebase for the frontend and backend logic of the application. Below is a breakdown of its significant components:
 
-- App Components (`app/components/`):
+- **App Components (`app/components/`)**:
   - `Button`: A reusable button component, providing consistent styling and behavior across the application.
   - `Card`: Displays individual raindrop items, allowing for tag management directly within each card.
   - `Input`: A styled input component used across the application, particularly in forms.
   - `Pagination`: Manages pagination for the display of raindrop items, enabling navigation between pages.
   - `Popup`: A generic popup component used for modals, such as the API key management form.
   - `Skeleton`: Provides a skeleton screen UI component to enhance perceived performance during data loading.
-- API Proxy (`app/api/proxy/`):
+- **API Proxy (`app/api/proxy/`)**:
   - `fetchRaindrops`: Handles fetching raindrop items from the Raindrop.io API.
   - `updateRaindrop`: Manages updating tags for individual raindrop items via the Raindrop.io API.
-- Authentication API (`app/api/auth/`):
+- **Authentication API (`app/api/auth/`)**:
   - `deleteOpenAIApiKey`: Endpoint for removing an OpenAI API key from the user's profile.
   - `setOpenAIApiKey`: Allows setting an OpenAI API key to the user's profile.
   - `callback`: Handles the OAuth callback for Raindrop.io authentication.
-- Dashboard (`app/dashboard/`):
+- **Dashboard (`app/dashboard/`)**:
   - `Layout`: Defines the layout for the dashboard, including navigation and settings access.
   - `Page`: The main page for the dashboard, displaying the user's raindrop items and tagging interface.
-- App Root (`app/`):
+- **App Root (`app/`)**:
   - `Layout`: The root layout component that wraps the entire application, setting up global styles and fonts.
   - `Page`: The landing page of the application, directing users to authenticate with Raindrop.io.
   - `Global Styles`: Defines the global CSS rules and variables for styling the application.
@@ -120,14 +130,3 @@ Here are some planned features and improvements for the Raindrop.io Bookmark Man
 - Improve error handling and provide informative error messages to users
 - Implement unit tests to ensure code quality and maintainability
 - Optimize the application's performance and reduce the initial load time
-
-## Development Setup
-
-To contribute to the Raindrop.io Tag Manager project, clone the repository and install the dependencies using your preferred package manager. You'll need to have Node.js and npm installed on your system. After setting up, you can start the development server to test changes locally.
-
-```
-git clone https://github.com/dam354/raindrop-tag-manager.git
-cd raindrop-tag-manager
-npm install
-npm start
-```
